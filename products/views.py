@@ -20,7 +20,8 @@ def all_products(request):
             if sortkey == 'name':
                 sortkey = 'lower_name'
                 products = products.annotate(lower_name=Lower('name'))
-
+            if sortkey == 'category':
+                sortkey = 'category__name'  # sort by name instead of id
             if 'direction' in request.GET:
                 direction = request.GET['direction']
                 if direction == 'desc':
@@ -38,11 +39,13 @@ def all_products(request):
                 messages.error(
                     request, "You didn't enter any search criteria!")
                 return redirect(reverse('products'))
-            """ Q allows search between both products and descritpion, these are usally coupled together """
+            """ Q allows search between both products and descritpion, these
+             are usually coupled together """
             queries = Q(name__icontains=query) | Q(
                 description__icontains=query)
             """ i makes query case insensetive """
-            """ with Q command query filter would only give products where query shows in both the product name and description """
+            """ with Q command query filter would only give products where query
+             shows in both the product name and description """
             products = products.filter(queries)
 
     current_sorting = f'{sort}_{direction}'
