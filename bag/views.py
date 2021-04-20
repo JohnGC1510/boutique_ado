@@ -12,7 +12,7 @@ def add_to_bag(request, item_id):
 
     quantity = int(request.POST.get('quantity'))
     redirect_url = request.POST.get('redirect_url')
-
+    # create or get session variable
     bag = request.session.get('bag', {})
 
     if item_id in list(bag.keys()):
@@ -24,5 +24,5 @@ def add_to_bag(request, item_id):
 
     # overwrite session varaible with updated version of bag
     request.session['bag'] = bag
-    print(request.session['bag'])
+
     return redirect(redirect_url)
