@@ -6,7 +6,6 @@ from .forms import OrderForm
 from bag.contexts import bag_contents
 
 import stripe
-# Create your views here.
 
 
 def checkout(request):
@@ -14,8 +13,8 @@ def checkout(request):
     stripe_secret_key = settings.STRIPE_SECRET_KEY
 
     bag = request.session.get('bag', {})
-    if not bag:  # prevents users accessing checkout using URL
-        messages.error(request, "There's nothing in your bag")
+    if not bag:
+        messages.error(request, "There's nothing in your bag at the moment")
         return redirect(reverse('products'))
 
     current_bag = bag_contents(request)
@@ -28,6 +27,11 @@ def checkout(request):
     )
 
     order_form = OrderForm()
+
+    if not stripe_public_key:
+        messages.warning(request, 'Stripe public key is missing. \
+            Did you forget to set it in your environment?')
+
     template = 'checkout/checkout.html'
     context = {
         'order_form': order_form,
