@@ -225,6 +225,10 @@ a.category-badge>span.badge:hover {
     /* text-info */
 }
 
+input[name='q']::placeholder {
+    color: #aab7c4
+}
+
 /* -------------------------------- Media Queries */
 
 /* Slightly larger container on xl screens */
