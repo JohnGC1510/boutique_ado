@@ -30,7 +30,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: don't run with debug turned on in production!
 
-DEBUG = env('DEBUG')
+DEVELOPMENT = env('DEVELOPMENT')
+
+if DEVELOPMENT:
+    DEBUG = True
+else:
+    DEBUG = False
 
 if DEBUG:
     SECRET_KEY = env('SECRET_KEY')
